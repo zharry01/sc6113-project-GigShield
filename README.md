@@ -120,10 +120,26 @@ Add network `http://127.0.0.1:8545` / chainId `31337` to MetaMask and import Har
 
 ### Cloud deployment (Render)
 
-1. Push this folder to GitHub.
-2. Render → **New → Blueprint** → pick the repo (uses `render.yaml` + `Dockerfile`).
-3. Set the env var `CONTRACT_ADDRESS` to your Sepolia GigShield address, or register it later from the Setup tab.
-4. The public URL serves both the dApp and the API.
+1. Render → **New → Blueprint** → select `zharry01/sc6113-project-GigShield` (uses `render.yaml` + `Dockerfile`).
+2. Deploy the `gigshield` service. No contract address is required to start the website.
+3. Once you have deployed GigShield to Sepolia, set `CONTRACT_ADDRESS` in Render, or register it from the Setup tab with the Admin wallet.
+4. Open the public URL for the dApp; `/api/health` should return `ok: true`. This confirms the web service is running; contract operations still require a deployed contract and MetaMask.
+
+For manual setup, choose **New → Web Service** and use:
+
+| Setting | Value |
+|---|---|
+| Repository | `zharry01/sc6113-project-GigShield` |
+| Language | Docker |
+| Root Directory | Leave blank |
+| Dockerfile Path | `./Dockerfile` |
+| Docker Command | Leave blank; uses `node backend/server.js` from the Dockerfile |
+| Health Check Path | `/api/health` |
+| Instance Type | Free for an initial demo |
+
+Set `HOST=0.0.0.0`, `PORT=10000`, `DATA_DIR=/app/data`, and `RPC_URL=https://ethereum-sepolia-rpc.publicnode.com`. Docker handles dependency installation; there is no separate frontend build command. The same service serves the frontend, browser libraries, and API. Do not copy the previous PACT project's build command or `PACT_PUBLIC_DEMO` setting.
+
+If using Render's **Node** runtime instead, set Build Command to `npm ci --omit=dev --ignore-scripts`, Start Command to `npm start`, and `NODE_VERSION=22`. Use `DATA_DIR=./data` and the same host, port, RPC, and health-check settings. This frontend is plain HTML/JavaScript and does not need `npm run build`.
 
 | Env var | Default | Meaning |
 |---|---|---|

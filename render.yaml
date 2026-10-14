@@ -3,10 +3,17 @@ services:
   - type: web
     name: gigshield
     runtime: docker
+    dockerfilePath: ./Dockerfile
     plan: free
     healthCheckPath: /api/health
     envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: "10000"
+      - key: DATA_DIR
+        value: /app/data
       - key: RPC_URL
         value: https://ethereum-sepolia-rpc.publicnode.com
-      - key: CONTRACT_ADDRESS   # optional: can also be registered from the dApp (Setup tab)
-        sync: false
+      # Optional after deployment: add CONTRACT_ADDRESS in the Render dashboard,
+      # or register it from the dApp's Setup tab using the Admin wallet.

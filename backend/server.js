@@ -11,6 +11,7 @@ import { REGISTRY_ABI, SHIELD_ABI } from "../frontend/abi.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const PORT = Number(process.env.PORT || 4000);
+const HOST = process.env.HOST || "0.0.0.0";
 const RPC_URL = process.env.RPC_URL || "https://ethereum-sepolia-rpc.publicnode.com";
 
 const provider = new ethers.JsonRpcProvider(RPC_URL, undefined, { staticNetwork: false });
@@ -282,5 +283,5 @@ async function connectChain() {
   }
 }
 
-app.listen(PORT, () => console.log(`GigShield running at http://localhost:${PORT}`));
+app.listen(PORT, HOST, () => console.log(`GigShield listening on http://${HOST}:${PORT}`));
 connectChain();
