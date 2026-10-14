@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GigShield · Micro-insurance for gig workers</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="/vendor/chart.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🛡️</span>
+      <div>
+        <strong>GigShield</strong>
+        <small>On-chain micro-insurance for gig workers</small>
+      </div>
+    </div>
+    <div class="wallet" id="wallet">
+      <button class="btn primary" id="connectBtn">Connect MetaMask</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="dashboard" class="active">📊 Dashboard</button>
+    <button data-tab="customer" data-role="1" hidden>👤 Customer</button>
+    <button data-tab="auditor" data-role="2" hidden>🔍 Auditor</button>
+    <button data-tab="admin" data-role="3" hidden>⚙️ Admin</button>
+    <button data-tab="activity">📜 Activity &amp; Events</button>
+    <button data-tab="setup">🔧 Setup</button>
+  </nav>
+
+  <main>
+    <div id="notice"></div>
+
+    <section id="tab-dashboard" class="tab active">
+      <div class="kpis" id="kpis"></div>
+      <div class="grid charts">
+        <div class="card"><h3>Claims by status</h3><div class="chart-box"><canvas id="chartClaims"></canvas></div></div>
+        <div class="card"><h3>Premiums vs payouts (gUSD / day)</h3><div class="chart-box"><canvas id="chartFlows"></canvas></div></div>
+        <div class="card"><h3>Gas: estimated vs used (avg per action)</h3><div class="chart-box"><canvas id="chartGas"></canvas></div></div>
+        <div class="card"><h3>On-chain events by type</h3><div class="chart-box"><canvas id="chartEvents"></canvas></div></div>
+      </div>
+    </section>
+
+    <section id="tab-customer" class="tab"></section>
+    <section id="tab-auditor" class="tab"></section>
+    <section id="tab-admin" class="tab"></section>
+
+    <section id="tab-activity" class="tab">
+      <div class="card">
+        <div class="card-head">
+          <h3>My transactions</h3>
+          <small class="muted">Recorded by the backend with gas estimate vs. actual gas used</small>
+        </div>
+        <div class="table-wrap"><table id="txTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Event log (indexed from all 4 contracts)</h3>
+          <div class="inline">
+            <select id="eventFilter"><option value="">All events</option></select>
+            <label class="check"><input type="checkbox" id="eventMine" /> Only my wallet</label>
+          </div>
+        </div>
+        <div class="table-wrap"><table id="eventTable"></table></div>
+        <button class="btn ghost" id="eventMore" hidden>Load more</button>
+      </div>
+    </section>
+
+    <section id="tab-setup" class="tab">
+      <div class="card">
+        <h3>1 · Contract address</h3>
+        <p class="muted">Deploy <code>contracts/GigShield.sol</code> in Remix (select <b>GigShield</b> → Deploy), then paste the deployed address here.</p>
+        <div class="inline">
+          <input id="addrInput" placeholder="0x… GigShield contract address" />
+          <button class="btn primary" id="addrSave">Use this contract</button>
+        </div>
+        <div id="addrInfo" class="muted small"></div>
+      </div>
+      <div class="card">
+        <h3>2 · Register contract with backend <span class="badge admin">Admin</span></h3>
+        <p class="muted">The backend indexes events into its database for the dashboard and event log. An Admin signs a message (no gas) to prove ownership.</p>
+        <button class="btn" id="registerBackend">Sign &amp; register with backend</button>
+        <div id="backendInfo" class="muted small"></div>
+      </div>
+      <div class="card">
+        <h3>Demo accounts</h3>
+        <ol class="muted">
+          <li><b>Admin</b> = the wallet that deployed the contract.</li>
+          <li><b>Auditor</b> = second wallet; Admin grants it the Auditor role in the Admin tab.</li>
+          <li><b>Customer</b> = third wallet; clicks “Register as Customer”.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card">
+      <h3 id="modalTitle"></h3>
+      <div id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn ghost" id="modalCancel">Cancel</button>
+        <button class="btn primary" id="modalOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+</body>
+</html>

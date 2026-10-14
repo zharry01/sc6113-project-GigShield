@@ -1,0 +1,12 @@
+# Render Blueprint: New -> Blueprint -> select this repo
+services:
+  - type: web
+    name: gigshield
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: RPC_URL
+        value: https://ethereum-sepolia-rpc.publicnode.com
+      - key: CONTRACT_ADDRESS   # optional: can also be registered from the dApp (Setup tab)
+        sync: false

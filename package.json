@@ -1,0 +1,32 @@
+{
+  "name": "gigshield",
+  "version": "1.0.0",
+  "description": "GigShield - on-chain micro-insurance DApp for gig workers (SC6113 group project)",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "gas": "hardhat test test/gas-report.test.cjs",
+    "chain": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy-local.cjs --network localhost",
+    "seed:local": "hardhat run scripts/seed-local.cjs --network localhost",
+    "dev:local": "RPC_URL=http://127.0.0.1:8545 POLL_MS=2000 DATA_DIR=data/local node --watch backend/server.js",
+    "coverage": "hardhat coverage"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "cors": "^2.8.5",
+    "ethers": "^6.13.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0"
+  }
+}
